@@ -4,15 +4,156 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
 
-    <title>Example Student's HCDE 439 Physical Computing Page!</title>
+    <title>Jordan Cheung's HCDE 439 Physical Computing Page!</title>
 
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <h1>Example Student's Assignment 1!</h1>
+    <h1>Assignment 1: Blink!</h1>
     <div class="header">
-      <img src="red-panda.jpg" />
-      <p>Here is all the documentation for assignment 1!</p>
+      <img src="a1/a1-jingle_bells.gif" />
+      <p>"You work for a holiday light company and the chief innovation officer wants you to come up with a cool new pattern of blinking lights. 
+        <br>
+        <br>
+        You will create a schematic for at least 3 LEDs connected to your Arduino, which you will implement as a circuit on your breadboard. 
+        You will write firmware (in a .ino file) for the circuit that makes the LEDs blink in a pattern. You will also answer some questions."</p>
+    </div>
+    <div>
+      <br>
+      <h2>Planning</h2>
+      <p>I started this assignment off by writing out the requirements of the assignment:</p>
+      <ul>
+        <li>Use 3+ LEDs (any colors)</li>
+        <li>Limit current flowing using resistors</li>
+        <li>Each LED should blink (independently)</li>
+        <li>Comment each line of code</li>
+      </ul>
+      <p>
+        Since the assignment was holiday-themed, I thought I could blink colorful lights to a holiday tune.
+        "Jingle Bells" seemed like a solid classic with not too much rhythmic complexity and only four notes.
+      </p>
+      <br>
+
+      <h3>Schematic</h3>
+      <p>I drew a schematic to visualize my 4-LED circuit.</p>
+      <img src="a1/a1_schematic.jpeg" width = 500>
+      <br>
+
+      <h3>Calculations</h3>
+      <p>
+        I found the LED forward voltages for each color and suggested current in datasheets online. 
+        I then did some math to figure out which resistors to use so I wouldn't explode my LEDs. 
+        Each LED required a resistor between 100Ω and 150Ω. The closest resistors in my kit were 100Ω and 220Ω,
+        so I went with 220Ω for all of them to be safe.
+      </p>
+      <div class="row">
+        <div class="column">
+          <img src="a1/a1-calculations.jpeg" width = 500>
+        </div>
+        <div class="column"></div>
+          <img src="a1/a1-resistors.jpeg" width = 250>
+        </div>
+        <div class="column"></div>
+      </div>
+      <br>
+
+      <h2>Construction</h2>
+      <p>
+        I then brought my drawings to life by building my circuit using my breadboard, Arduino, wires,
+        LEDs, and 220Ω resistors.
+      </p>
+      <div class="row">
+        <div class="column">
+          <img src="a1/a1-full_board.jpeg" width = 250>
+        </div>
+        <div class="column">
+          <img src="a1/a1-breadboard_closeup.jpeg" width = 250>
+        </div>
+        <div class="column">
+          <img src="a1/a1-arduino_closeup.jpeg" width = 250>
+        </div>
+      </div>
+      <br>
+
+      <h2>Code</h2>
+      <p>
+        I then wrote some code to blink the lights to "Jingle Bells."
+      </p>
+      <pre>
+        <code>
+          // the setup function runs once when you press reset or power the board
+          void setup() {
+            // initialize digital pin LED_BUILTIN as an output.
+            pinMode(12, OUTPUT); // Using pin 12 as an output (BLUE)
+            pinMode(8, OUTPUT); // Using pin 8 as an output (GREEN)
+            pinMode(7, OUTPUT); // Using pin 7 as an output (YELLOW)
+            pinMode(4, OUTPUT); // Using pin 4 as an output (RED)
+          }
+  
+          // the loop function runs over and over again forever
+          void loop() {
+            // Everything off
+            digitalWrite(12, LOW); // Blue LED off
+            digitalWrite(8, LOW); // Green LED off
+            digitalWrite(7, LOW); // Yellow LED off
+            digitalWrite(4, LOW); // Red LED off
+  
+            // GREEN GREEN GREEN. JIN GLE BELLS.
+            digitalWrite(8, HIGH); // G LED on
+            delay(500); // Hold for half a second
+            digitalWrite(8, LOW); // G LED off
+            delay(100); // Hold for 100ms
+            digitalWrite(8, HIGH); // G LED on
+            delay(500); // Hold for half a second
+            digitalWrite(8, LOW); // G LED off
+            delay(100); // Hold for 100ms
+            digitalWrite(8, HIGH); // G LED on
+            delay(500); // Hold for half a second
+            digitalWrite(8, LOW); // G LED off
+            delay(500); // Hold for half a second
+  
+            // GREEN GREEN GREEN. JIN GLE BELLS.
+            digitalWrite(8, HIGH); // G LED on
+            delay(500); // Hold for half a second
+            digitalWrite(8, LOW); // G LED off
+            delay(100); // Hold for 100ms
+            digitalWrite(8, HIGH); // G LED on
+            delay(500); // Hold for half a second
+            digitalWrite(8, LOW); // G LED off
+            delay(100); // Hold for 100ms
+            digitalWrite(8, HIGH); // G LED on
+            delay(500); // Hold for half a second
+            digitalWrite(8, LOW); // G LED off
+            delay(500); // Hold for half a second
+  
+            // GREEN RED BLUE GREEN YELLOW. JIN GLE ALL THE WAY.
+            digitalWrite(8, HIGH); // G LED on
+            delay(500); // Hold for half a second
+            digitalWrite(8, LOW); // G LED off
+            digitalWrite(4, HIGH); // R LED on
+            delay(500); // Hold for half a second
+            digitalWrite(4, LOW); // R LED off
+            digitalWrite(12, HIGH); // B LED on
+            delay(1000); // Hold for one second
+            digitalWrite(12, LOW); // B LED off
+            digitalWrite(8, HIGH); // G LED on
+            delay(250); // Hold for 250ms
+            digitalWrite(8, LOW); // G LED off
+            digitalWrite(7, HIGH); // Y LED on
+            delay(500); // Hold for half a second
+            digitalWrite(7, LOW); // Y LED off
+            delay(2000); // Hold for two seconds
+          }
+        </code>
+      </pre>
+      <br>
+
+      <h2>Testing</h2>
+      <p>Finally, I uploaded my code and jingled all the way!</p>
+      <img src="a1/a1-jingle_bells.gif">
+
+      <h2>Additional questions</h2>
+      
     </div>
   </body>
 </html>
