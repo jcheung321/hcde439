@@ -30,7 +30,8 @@
       </ul>
       <p>
         Since the assignment was holiday-themed, I thought I could blink colorful lights to a holiday tune.
-        "Jingle Bells" seemed like a solid classic with not too much rhythmic complexity and only four notes.
+        I chose "Jingle Bells" because it is classic, and it doesn't have too much rhythmic or melodic complexity.
+        Since it only has four notes, I only needed four LEDs.
       </p>
       <br>
 
@@ -41,7 +42,7 @@
 
       <h3>Calculations</h3>
       <p>
-        I found the LED forward voltages for each color and suggested current in datasheets online. 
+        I found the LED forward voltages and suggested using current for each color in datasheets online. 
         I then did some math to figure out which resistors to use so I wouldn't explode my LEDs. 
         Each LED required a resistor between 100Ω and 150Ω. The closest resistors in my kit were 100Ω and 220Ω,
         so I went with 220Ω for all of them to be safe.
@@ -59,8 +60,7 @@
 
       <h2>Construction</h2>
       <p>
-        I then brought my drawings to life by building my circuit using my breadboard, Arduino, wires,
-        LEDs, and 220Ω resistors.
+        I brought my drawings to life by building my circuit using my breadboard, Arduino, wires, LEDs, and 220Ω resistors.
       </p>
       <div class="row">
         <div class="column">
@@ -146,14 +146,41 @@
           }
         </code>
       </pre>
-      <br>
 
       <h2>Testing</h2>
       <p>Finally, I uploaded my code and jingled all the way!</p>
       <img src="a1/a1-jingle_bells.gif">
+      <br>
 
       <h2>Additional questions</h2>
-      
+      <p>
+        <strong>1: Draw a graph where the X axis is time and the Y axis is voltage across the LEDs. Draw a line for each of your 3 LEDs.</strong>
+        <img src="a1/a1-voltage_time_graph.jpeg" width = 500>
+        <br>
+        <strong>2: How many LEDs could you blink independently with your Arduino? How much current would that draw?</strong>
+        <br>
+        <i>
+          If you are blinking the LEDs independently (i.e., they're not on simultaneously), we can treat the system like a simple series circuit.
+          Each LED has a suggested current usage of 20mA (0.02 A). Kirchoff's Current Law states that the current through a simple series loop
+          (which we have here) is constant. Therefore, the current drawn would be 0.02A.
+        </i>
+        <br>
+        <br>
+        <strong>3: How fast do you need to blink your LEDs until you no longer can tell that they are blinking?</strong>
+        <br>
+        <i>
+          I built a simple single, red LED circuit and used built-in Blink to experiment with various times.
+          I could see blinking with 14ms on, 14 ms off. I could not see blinking with 13ms on, 13ms off.
+        </i>
+        <br>
+        <br>
+        <strong>4: Did you use AI tools in completing this assignment? If yes, please provide details on how/when, as well as a brief reflection. If no, you can either leave this question blank, or provide other information if you'd like.</strong>
+        <br>
+        <i>
+          At one point, I was having trouble with my VSCode/GitHub integration, so I chatted with Gemini to troubleshoot and push my changes
+          to the repo. I did not use AI tools for any other parts of this assignment.
+        </i>
+      </p>
     </div>
   </body>
 </html>
