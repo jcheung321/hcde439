@@ -9,10 +9,185 @@
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <h1>Example Student's Assignment 2!</h1>
+    <h1>Assignment 2: Fade!</h1>
     <div class="header">
-      <img src="red-panda.jpg" />
-      <p>Here is all the documentation for assignment 2!</p>
+      <img src="a2/a2-stoplight.gif" />
+      <p>
+        "You work for a toy company, and the chief innovation officer wants you to make a prototype for a new light-up toy. 
+        <br><br>
+        You will create a schematic, circuit, and code that uses several LEDs (at least 3); 
+        a button, tilt switch, or a switch you make yourself;
+        a for-loop;
+        digitalWrite();
+        digitalRead();
+        and analogWrite().
+        <br><br>
+        Document your project on your webpage."
+      </p>
     </div>
+    <br>
+    <section>
+      <h2>Planning</h2>
+      <p>Like last time, I started by writing out the requirements of the assignment and brainstorming some ideas. I thought, "three LEDs, three colors... a stoplight!" Thus, the clicky stoplight traffic control toy was born. (No promises that it sells, CIO.)</p>
+      <br>
+
+      <h3>State diagram</h3>
+      <p>I drew a state diagram to more clearly describe how my stoplight system would work.</p>
+      <img src="a2/a2-state_diagram.jpeg" width=500>
+      <br>
+
+      <h3>Schematic and calculations</h3>
+      <p>
+        I drew a schematic to visualize the circuit system, which included three LEDs and a button. 
+        I realized that the LED situation was functionally the same as my circuit in A1. 
+        Just like last time, none of the LEDs would be on at the same time, so I reused <a href="a1.html#:~:text=4%2DLED%20circuit.-,Calculations,-I%20found%20the">A1's LED calculations</a>. Like last time, I went with 220Ω for each of the LED resistors.
+        <br><br>
+        For the button resistor, I wanted to keep the current under 40mA. 
+        The voltage (5V) was to stay constant, and I wanted a low current.
+        I used Ohm's law (V=IR) to determine that a high resistor value would result in a very low current draw.
+        Therefore, I chose to use the 1MΩ resistor since it was several magnitudes of order larger than the voltage.
+      </p>
+      <img src="a2/a2-schematic.jpeg" width=500>
+    </section>
+    <br>
+    <section>
+      <h2>Construction</h2>
+      <p>
+        I built my circuit using:
+        <ul>
+          <li>My breadboard</li>
+          <li>My Arduino UNO</li>
+          <li>Wires</li>
+          <li>3 LEDs (red, yellow, and green)</li>
+          <li>3 220Ω resistors</li>
+          <li>1 1MΩ resistor</li>
+          <li>1 button</li>
+        </ul>
+      </p>
+    </section>
+    <br>
+    <section>
+      <h2>Code</h2>
+      <p>
+        I then wrote some code so the LED color would rotate between each color with the push of the button.
+        I coded the yellow LED to fade in and out (to give the toy drivers more time to slow their toy cars down to a stop) (and so I could use analogWrite()).
+      </p>
+      <pre>
+        <code>
+          // setting constants for my pin connections
+          const int red = 12;
+          const int yellow = 10; // PWM pin
+          const int green = 8;
+          const int button = 7;
+
+          // setting initial state for variable reading button status
+          int buttonState = 0;
+
+          // setting value to tell what color is on and what is next
+          // set to green first so first press initiates red
+          int color = 2; // 0 is red, 1 is yellow, 2 is green
+
+          void setup() {
+            // initializing LEDs as outputs
+            pinMode(red, OUTPUT);
+            pinMode(yellow, OUTPUT);
+            pinMode(green, OUTPUT);
+
+            // initializing button as input
+            pinMode(button, INPUT);
+
+            // start with everything off
+            digitalWrite(red, LOW);
+            analogWrite(yellow, 0);
+            digitalWrite(green, LOW);
+          }
+
+          void loop() {
+            // read button state
+            buttonState = digitalRead(button);
+
+            // if button is pressed and color is red, red off and fade yellow in
+            if (buttonState == HIGH && color == 0) {
+              digitalWrite(red, LOW); // turn red off
+
+              color = 1; // yellow is on
+              // fade yellow on
+              for (int val = 0; val<=75; val++) {
+                analogWrite(yellow, val);
+                delay(15);
+              }
+
+            // if button is pressed and color is yellow, fade yellow out and green on
+            } else if (buttonState == HIGH && color == 1) {
+              // fade yellow out
+              for (int val = 75; val>=0; val--) {
+                analogWrite(yellow, val);
+                delay(15);
+              }
+
+              color = 2; // green is on
+              digitalWrite(green, HIGH); // turn green on
+
+            // if button is pressed and color is green, green off and red on
+            } else if (buttonState == HIGH && color == 2) {
+              Serial.println("RED ON - waiting");
+
+              digitalWrite(green, LOW); // turn green off
+
+              color = 0; // red is on
+              digitalWrite(red, HIGH); // turn red on
+
+              delay(2000); // needs a nonzero delay so the transition isn't instantaneous
+            }
+          }
+        </code>
+      </pre>
+    </section>
+    <br>
+    <section>
+      <h2>Testing</h2>
+      <p>
+        I uploaded my code and controlled some serious toy traffic! Gotta get to my paperwork soon; 
+        one of the toy drivers ran a red and was caught by the toy red light camera.
+      </p>
+      <img src="a2/a2-stoplight.gif" width=500>
+    </section>
+    <br>
+    <section>
+      <h2>Additional questions</h2>
+      <p><strong>1: Draw a chart where the X axis is time and the Y axis is voltage. Draw 3 lines representing the voltage across an LED with analogWrite(led, 64), analogWrite(led, 128), and analogWrite(led, 255).</strong></p>
+      <img src="a2/a2-voltage_time_graph.jpeg" width=500>
+      <br>
+
+      <p><strong>2: If all your LEDs were on simultaneously, what would the total current draw be? Is this above or below the total Arduino current draw limits? If all your LEDs were on, how long would your circuit run if powered by a 1200 mAh battery?</strong></p>
+      <i>
+        According to Kirchoff's Current Law, the sum of the current going into a node
+        is the sum of the current coming out of the node.
+        For three 20mA LEDs, the current draw would be 60mA, which is over the 40mA limit for our Arduino UNO units.
+        <br><br>
+        If the LEDs were powered by a 1200mAh battery, the circuit would run for 20 hours.
+      </i>
+      <img src="a2/a2-additional_qs.jpeg" width=500>
+      <br>
+
+      <p><strong>3: Measure and record the actual voltage across one of your LEDs when it's on. How does this compare to the theoretical forward voltage for your LED color?</strong></p>
+      <i>
+        My multimeter read the red LED at 2.28V. The theoretical value I found for my calculations was 2V, so this voltage is higher. 
+        Using KVL, we know that a higher LED voltage would result in a lower resistor voltage (since the voltage of the Arduino is a constant 5V).
+        Using Ohm's Law (R=V/I), a smaller V and unchanged I would yield a smaller resistance value, so I could have used a resistor with a lower resistance.
+        However, it's good practice to overshoot the resistor's resistance value for safety.
+      </i>
+      <img src="a2/a2-multimeter.jpeg" width=500>
+      <br>
+
+      <p><strong>4: Did you use AI tools in completing this assignment? If yes, please provide details on how/when, as well as a brief reflection. If no, you can either leave this question blank, or provide other information if you'd like.</strong></p>
+      <i>
+        I used AI for one thing: troubleshooting my Arduino code. After meticulously coding and commenting, I tested my circuit, but the behavior wasn't what I expected. Instead of moving from red to yellow to green (and back to red), the circuit was simply rotating between yellow and green. 
+        <br><br>
+        I tried all sorts of methods to figure out why my model wasn't performing the expected behavior-- I explained my code out loud, tried wiring things differently, moved things around in my code... Nothing was working. 
+        <br><br>
+        I chatted with ChatGPT (<a href="https://chatgpt.com/share/6ad6fd15-0a2c-83e8-a944-e2e62d721efd">view the log here</a>) to troubleshoot. It suggested methods like adding serial log checks and changing the way I read the button states. The solve was that the red LED needed a delay at the end of the loop so the loop wouldn't immediately recycle and skip past the red.
+      </i>
+    </section>
   </body>
 </html>
