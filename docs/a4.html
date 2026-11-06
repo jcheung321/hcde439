@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+    <title>Jordan Cheung's HCDE 439 Physical Computing Page!</title>
+
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <p><a href="index.html">Home</a></p>
+    <h1>Assignment 4: Libraries!</h1>
+    <div class="header">
+      <img src="a4/a4-light_touch_sensor.gif" />
+      <p>
+        "You will create a schematic, circuit, and code that uses parts from your kit that require a library (e.g. 
+        the remote control, capacitive touch, or the servo motor), and includes both an input part (sensor, e.g. 
+        capacitive touch) and an output part (actuator, e.g. servo). Your schematic description should label all 
+        connections. You have to justify why you are using the values you chose in your code and what those values 
+        are corresponding to in your circuit! In your firmware, *if* you're using analogRead(), you must 
+        write some code that calibrates your sensor readings. Document your project on your webpage."
+      </p>
+    </div>
+    <br>
+    <section>
+      <h2>Planning</h2>
+      <p>For my two inputs, I wanted to use a photoresistor and a capacitor. 
+        For my output, I wanted to use a servo motor. 
+        I planned to use the Servo and CapacitiveSensor libraries.</p>
+      <br>
+
+      <h3>Schematic and calculations</h3>
+      <p>
+        I drew a schematic to visualize the circuit system.
+        To calculate the capacitor resistor value, I referenced Lesson 8. 
+        On slide 18, we are instructed to use a 1MΩ resistor for absolute touch to activate the sensor. 
+        To calculate the photoresistor resistor value, I did the same calculation that I did in A3.
+        <br><br>
+        <i>"For the resistor next to the photoresistor (R_B), I used the photoresistor datasheet to see what range of resistances the photoresistor could achieve (R_A).
+        R_A's range was about 1KΩ to 100KΩ.
+        In accordance with the V_Out equation, R_B should be equal magnitudes away from R_A, 
+        low and R_A, high. Therefore, I used the geometric mean to determine that a 10KΩ resistor
+        would be suitable for this circuit."</p></i> – Jordan of A3
+      </p>
+      <img src="a4/a4-schematic_calculations.jpeg" width=500>
+    </section>
+    <br>
+    <section>
+      <h2>Construction</h2>
+      <p>
+        I built my circuit using:
+        <ul>
+          <li>My breadboard</li>
+          <li>My Arduino UNO</li>
+          <li>Wires</li>
+          <li>A metal measuring cup</li>
+          <li>A photoresistor</li>
+          <li>A servo motor</li>
+          <li>Alligator clips</li>
+          <li>A 10KΩ resistor</li>
+          <li>A 1MΩ resistor</li>
+        </ul>
+      </p>
+      <img src="a4/a4-circuit_top.jpeg" width = 350>
+      <img src="a4/a4-circuit_top_zoomed.jpeg" width = 350>
+      <img src="a4/a4-circuit_angle.jpeg" width = 350>
+    </section>
+    <br>
+    <section>
+      <h2>Code</h2>
+      <p>
+        I then wrote the code so the motor would rotate back and forth if the photoresistor was shaded 
+        or the measuring cup was touched.
+      </p>
+      <pre>
+        <code>
+          #include <\Servo.h>
+            #include <\CapacitiveSensor.h>
+            
+            // set up the Capacitive sensor with a send and recieve pin
+            CapacitiveSensor   cs_s2_r4 = CapacitiveSensor(2,4); // first param is send, second is receive
+            Servo myservo; // create Servo object to control a servo
+            int pos = 0; // variable to store the servo position
+            
+            // set up photoresistor sensor pin
+            const int photoSensorPin = A5;  // pin that the sensor is attached to
+            
+            // photoresistor variables
+            int photoSensor = 0;   // the sensor value
+            int photoSensorMin = 0;  // minimum sensor value
+            int onOffPhotoThreshold = 0; // threshold to switch based on light/darkness
+            
+            // capacitor variables
+            int capSensor = 0; // capacitor sensor value
+            int capSensorMax = 0; // max capacitor sensor value
+            int onOffCapThreshold = 0; // threshold to switch based on touch
+            
+            void setup() {
+              pinMode(photoSensorPin, INPUT); // set photoresistor input pin
+              cs_s2_r4.set_CS_AutocaL_Millis(0xFFFFFFFF); // turn off autocalibrate on channel 1 - just as an example
+              Serial.begin(9600); // begin Serial communication to print values
+              myservo.attach(5);  // attaches the servo on pin 5 to the Servo object
+            
+              // turn on LED to signal the start of the photo calibration period:
+              pinMode(LED_BUILTIN, OUTPUT);
+              digitalWrite(LED_BUILTIN, HIGH);
+            
+              // calibrate during the first five seconds (cover and uncover to get measurements)
+              photoSensor = analogRead(photoSensorPin);
+              photoSensorMin = photoSensor;
+            
+              while (millis() < 5000) {
+                photoSensor = analogRead(photoSensorPin);
+                
+                // record the minimum sensor value
+                if (photoSensor < photoSensorMin) {
+                  photoSensorMin = photoSensor;
+                }
+              }
+            
+              // print values to serial monitor for recordkeeping
+              Serial.print("Max photo value: ");
+              Serial.println(photoSensorMin);
+            
+              // set threshold for photoresistor to activate servo
+              onOffPhotoThreshold = photoSensorMin + 100;
+              Serial.print("On/off photo threshold: ");
+              Serial.println(onOffPhotoThreshold);
+            
+              // signal the end of the photo calibration period
+              digitalWrite(LED_BUILTIN, LOW);
+              delay(1000);
+            
+              // turn on LED to signal the start of the capacitor calibration period:
+              pinMode(LED_BUILTIN, OUTPUT);
+              digitalWrite(LED_BUILTIN, HIGH);
+            
+              // calibrate during the first five seconds (touch metal to get high measurement)
+              while (millis() < 10000) {
+                capSensor = cs_s2_r4.capacitiveSensor(30); // call the function to get the capacitive sensor value with 30 samples
+            
+                // record the maximum sensor value
+                if (capSensor > capSensorMax) {
+                  capSensorMax = capSensor;
+                }
+              }
+            
+              // print values to serial monitor for recordkeeping
+              Serial.print("Max capacitor value: ");
+              Serial.println(capSensorMax);
+            
+              // set threshold for capacitor to activate servo
+              onOffCapThreshold = capSensorMax / 2;
+              Serial.print("On/off capacitor threshold: ");
+              Serial.println(onOffCapThreshold);
+            
+              // signal the end of the calibration period
+              digitalWrite(LED_BUILTIN, LOW);
+            }
+            
+            void loop() {
+              // continuously read from photoresistor
+              photoSensor = analogRead(photoSensorPin);
+            
+              // continuously read from capacitor
+              capSensor = cs_s2_r4.capacitiveSensor(30); // call the function to get the capacitive sensor value with 30 samples
+            
+              // if dark or touching capacitor, servo activates
+              if (photoSensor < onOffPhotoThreshold || capSensor > onOffCapThreshold) {
+                for (pos = 0; pos <= 180; pos += 1) { // goes from 0 deg to 180 deg in 1 deg steps
+                  myservo.write(pos);              // tell servo to go to position in variable 'pos'
+                  delay(10);                       // waits 30 ms for the servo to reach the position
+                }
+                for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 deg to 0 deg in 1 ged steps
+                  myservo.write(pos);              // tell servo to go to position in variable 'pos'
+                  delay(10);                       // waits 30 ms for the servo to reach the position
+                }
+              }
+            }                    
+        </code>
+      </pre>
+    </section>
+    <br>
+    <section>
+      <h2>Testing</h2>
+      <p>
+        I uploaded my code and took my servo for a spin!
+      </p>
+      <img src="a4/a4-light_touch_sensor.gif" width=500>
+    </section>
+    <br>
+    <section>
+      <h2>Additional questions</h2>
+      <p><strong>1: Say you are using a servo motor you attach to pin 9. Draw a graph with the x-axis as time and the y-axis as voltage at pin 9 with respect to ground.</strong></p>
+      <img src="a4/a4-voltage_time_graph.jpeg" width=500>
+      <i>
+        When the servo receives a 1ms pulse, it turns 0° from start. When it receives a 2ms pulse, it turns 180° from start. 
+        Therefore, when turning from 0° to 180° (as in the code snippet), the servo will receive pulses ranging from 1ms to 2ms. 
+        Since the servo is incrementing by 1° each loop, the pulse will increase in duration by 1/180th of a ms for each degree increase.</i>
+      <br>
+    <br>
+      <p><strong>2: Your input device is slightly broken, leading it to give us an erroneous reading 1% of the time. How can we address this? Answer in (pseudo)code.</strong></p>
+      <i>
+        Referring to L8, slide 31, this sounds like data spikes, in which there is an "occasional read way different from others." To address them (remove the spikes), we are recommended to use a "median filter [or] limit range." We could use code-based methods to normalize the data and get rid of outliers. According to the Arduino forums, using the <a href="https://docs.arduino.cc/libraries/medianfilterlib/">median filter library</a> could be a good way to do so. <a href="https://en.wikipedia.org/wiki/Median_filter">More on median filters.</a>
+      </i>
+      <br>
+
+      <p><strong>3: Your input device is slightly noisy, leading the measurement to randomly deviate from the true measurement up or down by 10%. How can we address this? Answer in (pseudo)code.</strong></p>
+      <i>
+        (Again referring to L8), this sounds like high frequency noise-- a "fuzzy signal [with] values around the same number but not exactly the same." To address this (smooth the data), we can use "smoothing [or] low-pass filtering." Smoothing uses a moving average. As described in the <a href="https://docs.arduino.cc/built-in-examples/analog/Smoothing/">Arduino docs on smoothing analog data</a>, you can write code that "sequentially stores 10 readings from your analog sensor into an arrays, one by one. With each new value, the sum of all the numbers is generated and divided, producing an average value which then be used to smooth outlying data."
+      </i>
+      <br><br>
+
+      <p><strong>4: Did you use AI tools in completing this assignment? If yes, please provide details on how/when, as well as a brief reflection. If you used an LLM, please 'share' your conversation and include it as part of your submission, or cite the prompt(s) you used and the output. If no, you can either leave this question blank, or provide other information if you'd like.</strong></p>
+      <i>
+        I did not use AI for this assignment.
+      </i>
+    </section>
+    <br>
+    <p><a href="#">Back to top</a></p>
+    <p><a href="index.html">Home</a></p>
+    <p><a href="a3.html">Back to A3</a></p>
+  </body>
+</html>
