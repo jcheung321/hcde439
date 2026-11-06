@@ -83,8 +83,8 @@
       </p>
       <pre>
         <code>
-          #include <\Servo.h>
-            #include <\CapacitiveSensor.h>
+          #include &lt;Servo.h&gt;
+            #include &lt;CapacitiveSensor.h&gt;
             
             // set up the Capacitive sensor with a send and recieve pin
             CapacitiveSensor   cs_s2_r4 = CapacitiveSensor(2,4); // first param is send, second is receive
@@ -118,11 +118,11 @@
               photoSensor = analogRead(photoSensorPin);
               photoSensorMin = photoSensor;
             
-              while (millis() < 5000) {
+              while (millis() &lt; 5000) {
                 photoSensor = analogRead(photoSensorPin);
                 
                 // record the minimum sensor value
-                if (photoSensor < photoSensorMin) {
+                if (photoSensor &lt; photoSensorMin) {
                   photoSensorMin = photoSensor;
                 }
               }
@@ -145,11 +145,11 @@
               digitalWrite(LED_BUILTIN, HIGH);
             
               // calibrate during the first five seconds (touch metal to get high measurement)
-              while (millis() < 10000) {
+              while (millis() &lt; 10000) {
                 capSensor = cs_s2_r4.capacitiveSensor(30); // call the function to get the capacitive sensor value with 30 samples
             
                 // record the maximum sensor value
-                if (capSensor > capSensorMax) {
+                if (capSensor &gt; capSensorMax) {
                   capSensorMax = capSensor;
                 }
               }
@@ -175,12 +175,12 @@
               capSensor = cs_s2_r4.capacitiveSensor(30); // call the function to get the capacitive sensor value with 30 samples
             
               // if dark or touching capacitor, servo activates
-              if (photoSensor < onOffPhotoThreshold || capSensor > onOffCapThreshold) {
-                for (pos = 0; pos <= 180; pos += 1) { // goes from 0 deg to 180 deg in 1 deg steps
+              if (photoSensor &lt; onOffPhotoThreshold || capSensor &gt; onOffCapThreshold) {
+                for (pos = 0; pos &lt;= 180; pos += 1) { // goes from 0 deg to 180 deg in 1 deg steps
                   myservo.write(pos);              // tell servo to go to position in variable 'pos'
                   delay(10);                       // waits 30 ms for the servo to reach the position
                 }
-                for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 deg to 0 deg in 1 ged steps
+                for (pos = 180; pos &gt;= 0; pos -= 1) { // goes from 180 deg to 0 deg in 1 ged steps
                   myservo.write(pos);              // tell servo to go to position in variable 'pos'
                   delay(10);                       // waits 30 ms for the servo to reach the position
                 }
