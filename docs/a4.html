@@ -62,9 +62,17 @@
           <li>A 1MΩ resistor</li>
         </ul>
       </p>
-      <img src="a4/a4-circuit_top.jpeg" width = 350>
-      <img src="a4/a4-circuit_top_zoomed.jpeg" width = 350>
-      <img src="a4/a4-circuit_angle.jpeg" width = 350>
+      <div class="row">
+        <div class="column">
+          <img src="a4/a4-circuit_top.jpeg" width = 300>
+        </div>
+        <div class="column">
+          <img src="a4/a4-circuit_top_zoomed.jpeg" width = 300>
+        </div>
+        <div class="column">
+          <img src="a4/a4-circuit_angle.jpeg" width = 300>
+        </div>
+      </div>
     </section>
     <br>
     <section>
@@ -202,7 +210,8 @@
     <br>
       <p><strong>2: Your input device is slightly broken, leading it to give us an erroneous reading 1% of the time. How can we address this? Answer in (pseudo)code.</strong></p>
       <i>
-        Referring to L8, slide 31, this sounds like data spikes, in which there is an "occasional read way different from others." To address them (remove the spikes), we are recommended to use a "median filter [or] limit range." We could use code-based methods to normalize the data and get rid of outliers. According to the Arduino forums, using the <a href="https://docs.arduino.cc/libraries/medianfilterlib/">median filter library</a> could be a good way to do so. <a href="https://en.wikipedia.org/wiki/Median_filter">More on median filters.</a>
+        Referring to L8, slide 31, this sounds like data spikes, in which there is an "occasional read way different from others." To address them (remove the spikes), we are recommended to use a "median filter [or] limit range." We could use code-based methods to normalize the data and get rid of outliers. According to the Arduino forums, using the <a href="https://docs.arduino.cc/libraries/medianfilterlib/">median filter library</a> could be a good way to do so. "The library stores the last N items in the window and calculates the median." I learned more about median filters <a href="https://en.wikipedia.org/wiki/Median_filter">here</a>.
+        <br>
       </i>
       <br>
 
