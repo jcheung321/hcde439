@@ -30,12 +30,12 @@
       <h3>Schematic and calculations</h3>
       <p>
         I drew a schematic to visualize the circuit system.
-        To calculate the capacitor resistor value, I referenced Lesson 8. 
+        I referenced Lesson 8 to calculate the capacitor resistor value. 
         On slide 18, we are instructed to use a 10MΩ resistor for the sensor to respond from 4-6" away. 
         <img src="a5/a5-schematic_calculations.jpeg" alt="">
         <br>
         For the current across the LED strip (and therefore N-MOSFET because of KCL), I used KVL to calculate
-        the voltage across the resistor on the LED strip. I then used Ohm's law to calculate the current across the strip,
+        the voltage across the 180Ω resistor on the LED strip. I then used Ohm's law to calculate the current across the strip,
         which was 12 mA. I also noted the value on my AC/DC converter box: the output current would be 2A.
         <br><br>
         I noted that there's a negligible (~0V) voltage drop across the N-MOSFET (because at that point in the circuit,
@@ -60,7 +60,7 @@
           <li>An AC/DC converter</li>
           <li>Alligator clips</li>
           <li>An LED strip cutting (which has 3 white LEDs and a 180Ω resistor)</li>
-          <li>10x1MΩ resistors rolled and clipped together like a tootsie roll</li>
+          <li>10x1MΩ resistors rolled and clamped together like a tootsie roll</li>
         </ul>
       </p>
       <div class="row">
@@ -211,6 +211,7 @@
         forward, both back, then one forward one back, and one back then forward.
       </strong></p>
       <img src="a5/a5-addl_q-3.1.jpeg" alt="">
+      <br>
       <i>
         The datasheet tells me that if I write HIGH and LOW to the pins, each motor M1 and M2 will spin
         in the directions listed below. (Ex: ~3 HIGH + ~5 LOW = M1 turns left.)
