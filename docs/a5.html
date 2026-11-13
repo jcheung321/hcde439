@@ -32,7 +32,7 @@
         I drew a schematic to visualize the circuit system.
         I referenced Lesson 8 to calculate the capacitor resistor value. 
         On slide 18, we are instructed to use a 10MΩ resistor for the sensor to respond from 4-6" away. 
-        <img src="a5/a5-schematic_calculations.jpeg" alt="">
+        <img src="a5/a5-schematic_calculations.jpeg" width=300>
         <br>
         For the current across the LED strip (and therefore N-MOSFET because of KCL), I used KVL to calculate
         the voltage across the 180Ω resistor on the LED strip. I then used Ohm's law to calculate the current across the strip,
@@ -40,7 +40,7 @@
         <br><br>
         I noted that there's a negligible (~0V) voltage drop across the N-MOSFET (because at that point in the circuit,
         the current is essentially going from ground to ground).
-        <img src="a5/a5-calculations_across_components.jpeg" alt="">
+        <img src="a5/a5-calculations_across_components.jpeg" width=300>
         <br>
         To ensure the N-MOSFET could handle these 12mA I calculated, I checked its datasheet.
         The max drain current was a whopping 49A! So I was not concerned in the slightest.
@@ -193,7 +193,7 @@
         2: Draw a schematic for a circuit with using at least your arduino, a DC motor, and a flyback diode. 
         Find parts with datasheets you could use for each of these schematic components.
       </strong></p>
-      <img src="a5/a5-addl_q-2.jpeg" alt="">
+      <img src="a5/a5-addl_q-2.jpeg" width=300">
       <i>
         To make this circuit, I could use components from my kit:
         <ul>
@@ -210,12 +210,12 @@
         least your arduino, this chip, and two motors. Write (pseudo) code that shows how you would move the motors both 
         forward, both back, then one forward one back, and one back then forward.
       </strong></p>
-      <img src="a5/a5-addl_q-3.1.jpeg" alt="">
+      <img src="a5/a5-addl_q-3.1.jpeg" width=300>
       <br>
       <i>
         The datasheet tells me that if I write HIGH and LOW to the pins, each motor M1 and M2 will spin
         in the directions listed below. (Ex: ~3 HIGH + ~5 LOW = M1 turns left.)
-        <img src="a5/a5-addl_q-3.2.jpeg" alt="">
+        <img src="a5/a5-addl_q-3.2.jpeg" width=300>
         <br>
         To move them both forward (let's say right), I would digitalWrite HIGH to pins
         5 and 11, while writing LOW to pins 3 and 9. To move them backward (left), I would digitalWrite
