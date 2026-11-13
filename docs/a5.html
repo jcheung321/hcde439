@@ -22,23 +22,26 @@
     <br>
     <section>
       <h2>Planning</h2>
-      <p>For my two inputs, I wanted to use a photoresistor and a capacitor. 
-        For my output, I wanted to use a servo motor. 
-        I planned to use the Servo and CapacitiveSensor libraries.</p>
+      <p>For my input sensor (with a library), I wanted to use a capacitive sensor (my handy dandy 1/3 measuring cup).
+        For my high-load output device (to which I would later analogWrite()), I wanted to use an LED strip.
+      </p>
       <br>
 
       <h3>Schematic and calculations</h3>
       <p>
         I drew a schematic to visualize the circuit system.
         To calculate the capacitor resistor value, I referenced Lesson 8. 
-        On slide 18, we are instructed to use a 1MΩ resistor for absolute touch to activate the sensor. 
-        To calculate the photoresistor resistor value, I did the same calculation that I did in A3.
+        On slide 18, we are instructed to use a 10MΩ resistor for the sensor to respond from 4-6" away. 
         <br><br>
-        <i>"For the resistor next to the photoresistor (R_B), I used the photoresistor datasheet to see what range of resistances the photoresistor could achieve (R_A).
-        R_A's range was about 1KΩ to 100KΩ.
-        In accordance with the V_Out equation, R_B should be equal magnitudes away from R_A, 
-        low and R_A, high. Therefore, I used the geometric mean to determine that a 10KΩ resistor
-        would be suitable for this circuit."</p></i> – Jordan of A3
+        For the current across the LED strip (and therefore N-MOSFET because of KCL), I used KVL to calculate
+        the voltage across the resistor on the LED strip. I then used Ohm's law to calculate the current across the strip,
+        which was 12 mA. I also noted the value on my AC/DC converter box: the output current would be 2A.
+        <br><br>
+        I noted that there's a negligible (~0V) voltage drop across the N-MOSFET (because at that point in the circuit,
+        the current is essentially going from ground to ground).
+        <br><br>
+        To ensure the N-MOSFET could handle these 12mA I calculated, I checked its datasheet.
+        The max drain current was a whopping 49A! So I was not concerned in the slightest.
       </p>
       <img src="a4/a4-schematic_calculations.jpeg" width=500>
     </section>
@@ -49,34 +52,34 @@
         I built my circuit using:
         <ul>
           <li>My breadboard</li>
-          <li>My Arduino UNO</li>
+          <li>My Arduino UNO (and its corresponding cord/dongle to connect to my laptop)</li>
           <li>Wires</li>
           <li>A metal measuring cup</li>
-          <li>A photoresistor</li>
-          <li>A servo motor</li>
+          <li>An N-MOSFET transistor</li>
+          <li>An AC/DC converter</li>
           <li>Alligator clips</li>
-          <li>A 10KΩ resistor</li>
-          <li>A 1MΩ resistor</li>
+          <li>An LED strip cutting (which has 3 white LEDs and a 180Ω resistor)</li>
+          <li>10 1MΩ resistors rolled and clipped together like a tootsie roll</li>
         </ul>
       </p>
       <div class="row">
         <div class="column">
-          <img src="a4/a4-circuit_top.jpeg" width = 300>
+          <img src="a5/a5-circuit_top.jpeg" width = 300>
         </div>
         <div class="column">
-          <img src="a4/a4-circuit_top_zoomed.jpeg" width = 300>
+          <img src="a5/a5-circuit_angle.jpeg" width = 300>
         </div>
-        <div class="column">
-          <img src="a4/a4-circuit_angle.jpeg" width = 300>
-        </div>
+        <!-- <div class="column">
+          <img src="" width = 300>
+        </div> -->
       </div>
     </section>
     <br>
     <section>
       <h2>Code</h2>
       <p>
-        I then wrote the code so the motor would rotate back and forth if the photoresistor was shaded 
-        or the measuring cup was touched.
+        I then wrote code so the LED strip would shine brighter when I was closer to the
+        measuring cup.
       </p>
       <pre>
         <code>
@@ -155,38 +158,61 @@
     <section>
       <h2>Testing</h2>
       <p>
-        I uploaded my code and took my servo for a spin!
+        I uploaded my code and got in touch with my new higher power!
       </p>
-      <img src="a4/a4-light_touch_sensor.gif" width=500>
+      <div class="row">
+        <div class="column">
+          <img src="a5/a5-hover_tap_sensor.gif" width = 300>
+        </div>
+        <div class="column">
+          <img src="a5/a5-cup_sensor.gif" width = 300>
+        </div>
+        <!-- <div class="column">
+          <img src="" width = 300>
+        </div> -->
+      </div>
     </section>
     <br>
     <section>
       <h2>Additional questions</h2>
-      <p><strong>1: These are the datasheets for the n-mosfet transistor: DMT6009LCT, IRLZ44N, P30N06LE. 
+      <p><strong>
+        1: These are the datasheets for the n-mosfet transistor: DMT6009LCT, IRLZ44N, P30N06LE. 
         Read the text on your mosfet to see which one you have. For your mosfet, what is the absolute 
-        maximum amount of current between pins 2 and 3?</strong></p>
+        maximum amount of current between pins 2 and 3?
+      </strong></p>
       <img src="pic-of-transistor" width=500>
       <i>
         I have the IRLZ44N N-MOSFET transistor. The absolute max current between pins 2 and 3 (drain and source) is 
-        also known as the continuous drain current. The max varies at different temperatures. at 25˚C (closer to my room's temperature),
-        the maximum current is 47A (a lot)!
+        also known as the continuous drain current. The max varies at different temperatures. At 25˚C (closer to my 
+        room's temperature), the maximum current is 47A (a lot)!
       </i>
       <br><br>
 
-      <p><strong>2: Draw a schematic for a circuit with using at least your arduino, a DC motor, and a flyback diode. 
-        Find parts with datasheets you could use for each of these schematic components.</strong></p>
+      <p><strong>
+        2: Draw a schematic for a circuit with using at least your arduino, a DC motor, and a flyback diode. 
+        Find parts with datasheets you could use for each of these schematic components.
+      </strong></p>
       <i>
         
       </i>
       <br><br>
 
-      <p><strong>3: Here is the datasheet for the L293D chip: https://www.ti.com/product/L293D. Draw a schematic using at least your arduino, this chip, and two motors. Write (pseudo) code that shows how you would move the motors both forward, both back, then one forward one back, and one back then forward.</strong></p>
+      <p><strong>
+        3: Here is the datasheet for the L293D chip: https://www.ti.com/product/L293D. Draw a schematic using at 
+        least your arduino, this chip, and two motors. Write (pseudo) code that shows how you would move the motors both 
+        forward, both back, then one forward one back, and one back then forward.
+      </strong></p>
       <i>
         
       </i>
       <br><br>
 
-      <p><strong>4: Did you use AI tools in completing this assignment? If yes, please provide details on how/when, as well as a brief reflection. If you used an LLM, please 'share' your conversation and include it as part of your submission, or cite the prompt(s) you used and the output. If no, you can either leave this question blank, or provide other information if you'd like.</strong></p>
+      <p><strong>
+        4: Did you use AI tools in completing this assignment? If yes, please provide details on how/when, as well as a brief 
+        reflection. If you used an LLM, please 'share' your conversation and include it as part of your submission, or cite 
+        the prompt(s) you used and the output. If no, you can either leave this question blank, or provide other information if 
+        you'd like.
+      </strong></p>
       <i>
         I did not use AI for this assignment.
       </i>
@@ -194,6 +220,6 @@
     <br>
     <p><a href="#">Back to top</a></p>
     <p><a href="index.html">Home</a></p>
-    <p><a href="a3.html">Back to A3</a></p>
+    <p><a href="a4.html">Back to A4</a></p>
   </body>
 </html>
