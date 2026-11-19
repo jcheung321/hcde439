@@ -20,7 +20,7 @@ svg {
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   max-width: 1000px;
@@ -73,7 +73,7 @@ h2 {
 }
 
 .assignment a:hover {
-  color: #f06;
+  color: darkred;
 }
 
 .assignment img {
@@ -82,5 +82,27 @@ h2 {
 }
 
 .assignment p {
+  margin-top: 0.5em;
+}
+
+.finalProject {
+  font-size: 1.25em;
+  text-align: center;
+}
+
+.finalProject a {
+  color: #000;
+  text-decoration: none;
+}
+
+.finalProject a:hover {
+  color: darkred;
+}
+
+.finalProject img {
+  object-fit: cover;
+}
+
+.finalProject p {
   margin-top: 0.5em;
 }
